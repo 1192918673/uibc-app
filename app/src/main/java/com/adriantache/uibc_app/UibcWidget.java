@@ -5,21 +5,62 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 
+import java.util.Date;
+
+
 /**
  * Implementation of App Widget functionality.
  */
 public class UibcWidget extends AppWidgetProvider {
+    private static boolean fromOrNext = true;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        final CharSequence descriptionNext = "Next anniversary:";
+        final CharSequence descriptionFrom = "Time since uîbc:";
+        CharSequence description;
+
+        if (fromOrNext) {
+            description = descriptionFrom;
+            fromOrNext = false;
+        } else {
+            description = descriptionNext;
+            fromOrNext = true;
+        }
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.uibc_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.description_text, description);
+        views.setTextViewText(R.id.time, getTime(fromOrNext));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+
+    private static String getTime(boolean fromOrNext) {
+        Date today = new Date();
+        Date anniversary = new Date(1433172600000L);
+
+       /* //method to fetch current time and return time to next/past event
+        Date today = new Date();
+        Date anniversary = new Date(1433172600000L);
+
+        Calendar todayC = Calendar.getInstance();
+        todayC.setTime(today);
+        String year = String.valueOf(todayC.get(Calendar.YEAR));
+
+        Date nextAnniversary;
+
+        try {
+            nextAnniversary = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    .parse(year + "-06-12");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
+
+        return null;
     }
 
     @Override
