@@ -32,13 +32,36 @@ public class UibcWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.uibc_widget);
-        views.setTextViewText(R.id.description_text, description);
-        views.setTextViewText(R.id.time, getTime(fromOrNext));
+        if (anniversary()) {
+            views.setTextViewText(R.id.description_text, "For the past " + getYears());
+            views.setTextViewText(R.id.time, "I LOVE YOU!");
+            views.setImageViewResource(R.id.thumbnail,R.drawable.heart);
+        } else {
+            views.setTextViewText(R.id.description_text, description);
+            views.setTextViewText(R.id.time, getTime(!fromOrNext));
+            //views.setImageViewResource(R.id.thumbnail,R.drawable.logo);
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
+    private static String getYears() {
+        Calendar todayC = Calendar.getInstance();
+        int year = todayC.get(Calendar.YEAR);
+
+        return String.valueOf(year - 2015);
+    }
+
+    private static boolean anniversary() {
+        int anniversaryDay = 12;
+        int anniversaryMonth = 6;
+        Calendar todayC = Calendar.getInstance();
+        int todayDay = todayC.get(Calendar.DAY_OF_MONTH);
+        int todayMonth = todayC.get(Calendar.MONTH);
+
+        return anniversaryDay == todayDay && anniversaryMonth == todayMonth;
+    }
 
     private static String getTime(boolean fromOrNext) {
         //set anniversary
@@ -140,9 +163,7 @@ public class UibcWidget extends AppWidgetProvider {
 
         if (days == ERROR_VALUE || months == ERROR_VALUE || years == ERROR_VALUE) return "ERROR";
 
-        //todo replace output with a nice conditional StringBuilder
         StringBuilder sb = new StringBuilder();
-
         if (years > 0) {
             sb.append(years);
             sb.append(" ");
@@ -150,7 +171,6 @@ public class UibcWidget extends AppWidgetProvider {
             if (years == 1) sb.append("Year");
             else sb.append("Years");
         }
-
         if (months > 0) {
             if (sb.length() != 0) sb.append(", ");
 
@@ -160,10 +180,9 @@ public class UibcWidget extends AppWidgetProvider {
             if (months == 1) sb.append("Month");
             else sb.append("Months");
         }
-
         if (days > 0) {
             boolean exclamation = false;
-            if (sb.length() != 0) sb.append("and ");
+            if (sb.length() != 0) sb.append(" and ");
             else {
                 sb.append("Just ");
                 exclamation = true;
