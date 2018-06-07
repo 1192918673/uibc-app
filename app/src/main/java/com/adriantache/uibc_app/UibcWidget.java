@@ -14,7 +14,6 @@ import java.util.Calendar;
 public class UibcWidget extends AppWidgetProvider {
     private static final int ERROR_VALUE = -1;
     private static boolean fromOrNext = true;
-    private static String description;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -22,6 +21,7 @@ public class UibcWidget extends AppWidgetProvider {
         final String descriptionNext = "Next anniversary:";
         final String descriptionFrom = "Time since uîbc:";
 
+        String description;
         if (fromOrNext) {
             description = descriptionFrom;
             fromOrNext = false;
@@ -138,38 +138,48 @@ public class UibcWidget extends AppWidgetProvider {
         //I'm being paranoid. But then again math isn't always my friend.
         if (days > 31) days = 31;
 
-        //todo replace output with a nice conditional StringBuilder
-
-        String yearText = years == 1 ? "Year" : "Years";
-        String monthText = months == 1 ? "Month" : "Months";
-        String dayText = days == 1 ? "Day" : "Days";
-
         if (days == ERROR_VALUE || months == ERROR_VALUE || years == ERROR_VALUE) return "ERROR";
-        else if (years == 0 && months == 0) return "Just " + days + " " + dayText + "!";
-        else if (years == 0) return months + " " + monthText + " and " + days + " " + dayText;
-        else
-            return years + " " + yearText + ", " + months + " " + monthText + " and " + days + " " + dayText;
-    }
 
-    private static Calendar getNextAnniversary(int todayDay, int todayMonth, int todayYear) {
-        int day = 12;
-        int month = 6;
-        int year = todayYear;
+        //todo replace output with a nice conditional StringBuilder
+        StringBuilder sb = new StringBuilder();
 
-        if (todayMonth == 6) {
-            if (todayDay < 12)
-                year = todayYear;
-            else if (todayDay > 12)
-                year = todayYear + 1;
-        } else if (todayMonth < 6)
-            year = todayYear;
-        else
-            year = todayYear + 1;
+        if (years > 0) {
+            sb.append(years);
+            sb.append(" ");
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+            if (years == 1) sb.append("Year");
+            else sb.append("Years");
+        }
 
-        return calendar;
+        if (months > 0) {
+            if (sb.length() != 0) sb.append(", ");
+
+            sb.append(months);
+            sb.append(" ");
+
+            if (months == 1) sb.append("Month");
+            else sb.append("Months");
+        }
+
+        if (days > 0) {
+            boolean exclamation = false;
+            if (sb.length() != 0) sb.append("and ");
+            else {
+                sb.append("Just ");
+                exclamation = true;
+            }
+
+            sb.append(days);
+            sb.append(" ");
+
+            if (days == 1) sb.append("Day");
+            else sb.append("Days");
+
+            if (exclamation) sb.append("!");
+        }
+
+        if (sb.length() != 0) return sb.toString();
+        else return "ERROR";
     }
 
     @Override
