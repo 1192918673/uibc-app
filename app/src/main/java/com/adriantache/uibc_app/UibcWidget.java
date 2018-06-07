@@ -39,7 +39,7 @@ public class UibcWidget extends AppWidgetProvider {
         } else {
             views.setTextViewText(R.id.description_text, description);
             views.setTextViewText(R.id.time, getTime(!fromOrNext));
-            //views.setImageViewResource(R.id.thumbnail,R.drawable.logo);
+            views.setImageViewResource(R.id.thumbnail,R.drawable.logo);
         }
 
         // Instruct the widget manager to update the widget
