@@ -8,7 +8,6 @@ import android.widget.RemoteViews;
 
 import java.util.Calendar;
 
-
 /**
  * Implementation of App Widget functionality.
  */
