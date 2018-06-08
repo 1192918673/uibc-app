@@ -3,10 +3,10 @@ package com.adriantache.uibc_app;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
-import java.util.Date;
 
 
 /**
@@ -34,13 +34,13 @@ public class UibcWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.uibc_widget);
         if (anniversary()) {
-            views.setTextViewText(R.id.description_text, "For the past " + getYears());
+            views.setTextViewText(R.id.description_text, "Together " + getYears() + " Years");
             views.setTextViewText(R.id.time, "I LOVE YOU!");
-            views.setImageViewResource(R.id.thumbnail,R.drawable.heart);
+            views.setImageViewResource(R.id.thumbnail, R.drawable.heart);
         } else {
             views.setTextViewText(R.id.description_text, description);
             views.setTextViewText(R.id.time, getTime(!fromOrNext));
-            views.setImageViewResource(R.id.thumbnail,R.drawable.logo);
+            views.setImageViewResource(R.id.thumbnail, R.drawable.logo);
         }
 
         // Instruct the widget manager to update the widget
@@ -59,7 +59,7 @@ public class UibcWidget extends AppWidgetProvider {
         int anniversaryMonth = 6;
         Calendar todayC = Calendar.getInstance();
         int todayDay = todayC.get(Calendar.DAY_OF_MONTH);
-        int todayMonth = todayC.get(Calendar.MONTH);
+        int todayMonth = todayC.get(Calendar.MONTH)+1;
 
         return anniversaryDay == todayDay && anniversaryMonth == todayMonth;
     }
@@ -73,8 +73,10 @@ public class UibcWidget extends AppWidgetProvider {
         //get today
         Calendar todayC = Calendar.getInstance();
         int todayDay = todayC.get(Calendar.DAY_OF_MONTH);
-        int todayMonth = todayC.get(Calendar.MONTH);
+        int todayMonth = todayC.get(Calendar.MONTH) + 1;
         int todayYear = todayC.get(Calendar.YEAR);
+
+        Log.i("TODAY", "anniversary: " + todayDay + " " + todayMonth + " " + todayYear);
 
         int days = ERROR_VALUE;
         int months = ERROR_VALUE;

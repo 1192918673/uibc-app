@@ -3,8 +3,8 @@
     android:initialKeyguardLayout="@layout/uibc_widget"
     android:initialLayout="@layout/uibc_widget"
     android:minHeight="40dp"
-    android:minWidth="4000dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:minWidth="400dp"
+    android:previewImage="@drawable/logo"
     android:resizeMode="horizontal"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen" />
