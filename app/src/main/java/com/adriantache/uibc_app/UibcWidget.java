@@ -77,19 +77,20 @@ public class UibcWidget extends AppWidgetProvider {
 
         Log.i("TODAY", "anniversary: " + todayDay + " " + todayMonth + " " + todayYear);
 
-        int days = ERROR_VALUE;
+        int days;
         int months = ERROR_VALUE;
         int years = ERROR_VALUE;
 
         //calculate time since anniversary
         if (fromOrNext) {
+            //ignore days to simplify things
+            days=0;
+
             if (todayMonth == anniversaryMonth) {
                 if (todayDay < anniversaryDay) {
-                    days = todayDay;
                     months = 11;
                     years = todayYear - anniversaryYear - 1;
                 } else if (todayDay > anniversaryDay) {
-                    days = todayDay;
                     months = 0;
                     years = todayYear - anniversaryYear;
                 }
@@ -97,26 +98,20 @@ public class UibcWidget extends AppWidgetProvider {
                 years = todayYear - anniversaryYear - 1;
 
                 if (todayDay < anniversaryDay) {
-                    days = 31 - anniversaryDay + todayDay;
                     months = 12 - anniversaryMonth + todayMonth - 1;
                 } else if (todayDay == anniversaryDay) {
-                    days = 0;
                     months = 12 - anniversaryMonth + todayMonth;
                 } else {
-                    days = todayDay - anniversaryDay;
                     months = 12 - anniversaryMonth + todayMonth;
                 }
             } else {
                 years = todayYear - anniversaryYear;
 
                 if (todayDay < anniversaryDay) {
-                    days = 31 - anniversaryDay + todayDay;
                     months = todayMonth - anniversaryMonth - 1;
                 } else if (todayDay == anniversaryDay) {
-                    days = 0;
                     months = todayMonth - anniversaryMonth;
                 } else {
-                    days = todayDay - anniversaryDay;
                     months = todayMonth - anniversaryMonth;
                 }
             }
