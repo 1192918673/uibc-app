@@ -42,6 +42,4 @@
         android:textColor="#000"
         android:textSize="18sp"
         tools:text="33 years 12 months 32 days" />
-
-    <!--todo tweak layout-->
 </RelativeLayout>

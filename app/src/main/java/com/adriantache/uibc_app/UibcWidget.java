@@ -7,15 +7,16 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
 
-import static android.support.v4.app.NotificationCompat.CATEGORY_EVENT;
-import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import static androidx.core.app.NotificationCompat.CATEGORY_EVENT;
+import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 /**
  * Implementation of App Widget functionality.
