@@ -33,7 +33,7 @@ public class UibcWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.uibc_widget);
         if (anniversary()) {
-            views.setTextViewText(R.id.description_text, "Together " + getYears() + " Years");
+            views.setTextViewText(R.id.description_text, "Together " + getYears() + " Years!");
             views.setTextViewText(R.id.time, "I LOVE YOU!");
             views.setImageViewResource(R.id.thumbnail, R.drawable.heart);
         } else {
@@ -58,7 +58,7 @@ public class UibcWidget extends AppWidgetProvider {
         int anniversaryMonth = 6;
         Calendar todayC = Calendar.getInstance();
         int todayDay = todayC.get(Calendar.DAY_OF_MONTH);
-        int todayMonth = todayC.get(Calendar.MONTH)+1;
+        int todayMonth = todayC.get(Calendar.MONTH) + 1;
 
         return anniversaryDay == todayDay && anniversaryMonth == todayMonth;
     }
@@ -84,7 +84,7 @@ public class UibcWidget extends AppWidgetProvider {
         //calculate time since anniversary
         if (fromOrNext) {
             //ignore days to simplify things
-            days=0;
+            days = 0;
 
             if (todayMonth == anniversaryMonth) {
                 if (todayDay < anniversaryDay) {
@@ -158,7 +158,7 @@ public class UibcWidget extends AppWidgetProvider {
         //I'm being paranoid. But then again math isn't always my friend.
         if (days > 31) days = 31;
 
-        if (days == ERROR_VALUE || months == ERROR_VALUE || years == ERROR_VALUE) return "ERROR";
+        if (days < 0 || months < 0 || years < 0) return "ERROR";
 
         StringBuilder sb = new StringBuilder();
         if (years > 0) {
