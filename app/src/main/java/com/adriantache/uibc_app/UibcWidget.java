@@ -1,12 +1,21 @@
 package com.adriantache.uibc_app;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
+
+import static android.support.v4.app.NotificationCompat.CATEGORY_EVENT;
+import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 /**
  * Implementation of App Widget functionality.
@@ -26,9 +35,13 @@ public class UibcWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.uibc_widget);
         if (anniversary()) {
-            views.setTextViewText(R.id.description_text, "Together " + getYears() + " Years!");
+            String years = getYears();
+
+            views.setTextViewText(R.id.description_text, "Together " + years + " Years!");
             views.setTextViewText(R.id.time, "I LOVE YOU!");
             views.setImageViewResource(R.id.thumbnail, R.drawable.heart);
+
+            triggerNotification(context, years);
         } else {
             views.setTextViewText(R.id.description_text, description);
             views.setTextViewText(R.id.time, getTime(!fromOrNext));
@@ -37,6 +50,51 @@ public class UibcWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static void triggerNotification(Context context, String years) {
+        final String NOTIFICATION_CHANNEL = "uibc";
+
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //define the importance level of the notification
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            //build the actual notification channel, giving it a unique ID and name
+            NotificationChannel channel =
+                    new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, importance);
+
+            //set a description for the channel
+            String description = "A channel which shows uibc anniversaries";
+            channel.setDescription(description);
+
+            //set notification LED colour
+            channel.setLightColor(Color.RED);
+
+            // Register the channel with the system
+            NotificationManager notificationManager = (NotificationManager) context.
+                    getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        //build the notification
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle("Happy " + years + " years anniversary!")
+                        .setContentText("Your uibc loves you very much <3")
+                        .setAutoCancel(true)
+                        .setCategory(CATEGORY_EVENT)
+                        .setColor(0xFF4081)
+                        .setVisibility(VISIBILITY_PUBLIC)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        //trigger the notification
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(12, notificationBuilder.build());
     }
 
     private static String getYears() {
