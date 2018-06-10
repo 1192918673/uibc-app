@@ -15,19 +15,12 @@ public class UibcWidget extends AppWidgetProvider {
     private static final int ERROR_VALUE = -1;
     private static boolean fromOrNext = true;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        final String descriptionNext = "Next anniversary:";
-        final String descriptionFrom = "Time since uîbc:";
-
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         String description;
         if (fromOrNext) {
-            description = descriptionFrom;
-            fromOrNext = false;
+            description = "Time since uîbc:";
         } else {
-            description = descriptionNext;
-            fromOrNext = true;
+            description = "Next anniversary:";
         }
 
         // Construct the RemoteViews object
@@ -202,6 +195,9 @@ public class UibcWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
+            //flip from or next flag
+            fromOrNext = !fromOrNext;
+
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
