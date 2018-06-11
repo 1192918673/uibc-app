@@ -42,7 +42,8 @@ public class UibcWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.time, "I LOVE YOU!");
             views.setImageViewResource(R.id.thumbnail, R.drawable.heart);
 
-            triggerNotification(context, years);
+            if (isItTenAM())
+                triggerNotification(context, years);
         } else {
             views.setTextViewText(R.id.description_text, description);
             views.setTextViewText(R.id.time, getTime(!fromOrNext));
@@ -51,6 +52,11 @@ public class UibcWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static boolean isItTenAM() {
+        Calendar today = Calendar.getInstance();
+        return today.get(Calendar.HOUR_OF_DAY) == 10;
     }
 
     private static void triggerNotification(Context context, String years) {
