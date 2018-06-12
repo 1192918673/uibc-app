@@ -24,6 +24,7 @@ import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 public class UibcWidget extends AppWidgetProvider {
     private static final int ERROR_VALUE = -1;
     private static boolean fromOrNext = true;
+    private static int LAST_NOTIFICATION_YEAR;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         String description;
@@ -42,7 +43,7 @@ public class UibcWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.time, "I LOVE YOU!");
             views.setImageViewResource(R.id.thumbnail, R.drawable.heart);
 
-            if (isItTenAM())
+            if (isItTenAM() && LAST_NOTIFICATION_YEAR != Calendar.getInstance().get(Calendar.YEAR))
                 triggerNotification(context, years);
         } else {
             views.setTextViewText(R.id.description_text, description);
@@ -102,6 +103,9 @@ public class UibcWidget extends AppWidgetProvider {
         //trigger the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(12, notificationBuilder.build());
+
+        //set notification year to prevent triggering multiple notifications for one year
+        LAST_NOTIFICATION_YEAR = Calendar.getInstance().get(Calendar.YEAR);
     }
 
     private static String getYears() {
