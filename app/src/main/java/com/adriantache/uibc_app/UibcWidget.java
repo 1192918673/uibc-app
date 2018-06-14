@@ -28,7 +28,7 @@ public class UibcWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         String description;
-        if (fromOrNext) {
+        if (!fromOrNext) {
             description = "Time since uîbc:";
         } else {
             description = "Next anniversary:";
