@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".UibcWidget">
-            <intent-filter>
+        <receiver android:name=".UibcWidget" android:icon="@drawable/logo">
+            <intent-filter android:icon="@drawable/logo">
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
